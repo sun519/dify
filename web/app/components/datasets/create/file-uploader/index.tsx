@@ -185,7 +185,8 @@ const FileUploader = ({
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    e.target !== dragRef.current && setDragging(true)
+    if (e.target !== dragRef.current)
+      setDragging(true)
   }
   const handleDragOver = (e: DragEvent) => {
     e.preventDefault()
@@ -194,7 +195,8 @@ const FileUploader = ({
   const handleDragLeave = (e: DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    e.target === dragRef.current && setDragging(false)
+    if (e.target === dragRef.current)
+      setDragging(false)
   }
   type FileWithPath = {
     relativePath?: string
@@ -322,7 +324,7 @@ const FileUploader = ({
           <div>{t('datasetCreation.stepOne.uploader.tip', {
             size: fileUploadConfig.file_size_limit,
             supportTypes: supportTypesShowNames,
-            batchCount: fileUploadConfig.batch_count_limit,
+            batchCount: notSupportBatchUpload ? 1 : fileUploadConfig.batch_count_limit,
           })}</div>
           {dragging && <div ref={dragRef} className='absolute left-0 top-0 h-full w-full' />}
         </div>
